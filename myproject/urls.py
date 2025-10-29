@@ -17,11 +17,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from .views import home
+from django.http import JsonResponse
+
+def home(request):
+    return JsonResponse({"message": "Welcome to the Asset Management API!"})
 
 urlpatterns = [
-    path('', home),
+    path('', home, name='home'),
     path('admin/', admin.site.urls),
+    path('api/queries/', include('queries.urls')),
     path('api/users/', include('users.urls')),
     path('api/assets/', include('assets.urls')),
-    path('api/queries/', include('queries.urls')),
 ]

@@ -1,31 +1,48 @@
 import { useState } from "react";
 import { registerUser } from "../services/api";
 
-export default function Register() {
-  const [form, setForm] = useState({ username: "", email: "", password: "" });
+function Register() {
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
 
-  const handleChange = (e) =>
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await registerUser(form);
-      alert("Registered successfully! Go to Login");
-    } catch (err) {
-      alert("Error registering user");
+      const response = await registerUser(formData);
+      alert("Registration successful!");
+      console.log(response);
+    } catch (error) {
+      alert("Error registering user!");
+      console.error(error);
     }
   };
 
   return (
-    <div className="register">
+    <div>
       <h2>Register</h2>
       <form onSubmit={handleSubmit}>
-        <input name="username" placeholder="Username" onChange={handleChange} />
-        <input name="email" placeholder="Email" onChange={handleChange} />
         <input
-          name="password"
+          type="text"
+          name="username"
+          placeholder="Username"
+          onChange={handleChange}
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          onChange={handleChange}
+        />
+        <input
           type="password"
+          name="password"
           placeholder="Password"
           onChange={handleChange}
         />
@@ -34,3 +51,5 @@ export default function Register() {
     </div>
   );
 }
+
+export default Register;
